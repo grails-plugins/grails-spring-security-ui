@@ -197,7 +197,7 @@ class SpringSecurityUiService implements AclStrategy, ErrorsStrategy, Persistent
 
 		save accountLocked: false, user, 'finishRegistration', transactionStatus
 		if (!user.hasErrors()) {
-			addRoles user, registerDefaultRoleNames
+			addRoles user, registerDefaultRoleNames, transactionStatus
 			delete registrationCode, 'finishRegistration', transactionStatus
 			springSecurityService.reauthenticate registrationCode.username
 		}
@@ -301,7 +301,7 @@ class SpringSecurityUiService implements AclStrategy, ErrorsStrategy, Persistent
 
 		save [:], user, 'saveUser', transactionStatus
 		if (!user.hasErrors()) {
-			addRoles user, roleNames
+			addRoles user, roleNames, transactionStatus
 		}
 
 		user
@@ -322,7 +322,7 @@ class SpringSecurityUiService implements AclStrategy, ErrorsStrategy, Persistent
 		}
 
 		UserRole.removeAll user
-		addRoles user, roleNames
+		addRoles user, roleNames, transactionStatus
 		removeUserFromCache user
 	}
 
@@ -333,7 +333,7 @@ class SpringSecurityUiService implements AclStrategy, ErrorsStrategy, Persistent
 		removeUserFromCache user
 	}
 
-	protected void addRoles(user, List<String> roleNames) {
+	protected void addRoles(user, List<String> roleNames, TransactionStatus transactionStatus) {
 		String authorityNameField = uiPropertiesStrategy.paramNameToPropertyName('authority', 'role')
 
 		try {
