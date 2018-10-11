@@ -445,8 +445,8 @@ class SpringSecurityUiService implements AclStrategy, ErrorsStrategy, Persistent
 	}
 
 	@Transactional
-	Number removeUserRole(def u, def r) {
-		UserRole.where { user == u && role == r }.deleteAll()
+	Boolean removeUserRole(def u, def r) {
+		UserRole.remove(u,r,false)
 	}
 
 	protected void removeUserFromCache(user) {

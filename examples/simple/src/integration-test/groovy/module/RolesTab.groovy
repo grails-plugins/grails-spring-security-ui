@@ -41,5 +41,9 @@ class RolesTab extends Module {
         return findAllEnabledRoles().collect { it.attr('id') }.containsAll(roleNames)
     }
 
+    void disableRole(String roleName) {
+        $("input", type: "checkbox", id: roleName).value(false)
+    }
+
 
 }

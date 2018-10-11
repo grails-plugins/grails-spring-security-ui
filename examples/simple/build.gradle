@@ -65,8 +65,10 @@ dependencies {
         exclude group: 'org.gebish', module: 'geb-spock'
     }
     testCompile 'org.gebish:geb-spock:2.1'
+    testCompile group: 'org.seleniumhq.selenium', name: 'selenium-support', version: '3.14.0'
     testCompile "org.seleniumhq.selenium:selenium-chrome-driver:3.6.0"
     testCompile "org.seleniumhq.selenium:selenium-remote-driver:3.6.0"
+    testCompile "org.seleniumhq.selenium:selenium-api:3.6.0"
     testCompile "org.seleniumhq.selenium:selenium-api:3.6.0"
 
     compile 'dumbster:dumbster:1.6', { transitive = false }

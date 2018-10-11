@@ -203,5 +203,27 @@ class UserSpec extends AbstractSecuritySpec {
         assert rolesTab.totalEnabledRoles() == 2
         assert rolesTab.hasEnabledRoles(['ROLE_USER', 'ROLE_ADMIN'])
         assert rolesTab.totalRoles() == 12
+
+        when: "ROLE_ADMIN is disabled and the changes are saved"
+        rolesTab.disableRole "ROLE_ADMIN"
+        submit()
+        rolesTab.select()
+
+        then: "12 roles are listed and 1 are enabled"
+        assert rolesTab.totalEnabledRoles() == 1
+        assert rolesTab.hasEnabledRole('ROLE_USER')
+        assert rolesTab.totalRoles() == 12
+
+        when: "ROLE_USER is disabled and ROLE_COFFEE and ROLE_ADMIN is added the changes are saved"
+        rolesTab.disableRole "ROLE_USER"
+        rolesTab.enableRole "ROLE_COFFEE"
+        rolesTab.enableRole "ROLE_ADMIN"
+        submit()
+        rolesTab.select()
+
+        then: "12 roles are listed and 2 are enabled"
+        assert rolesTab.totalEnabledRoles() == 2
+        assert rolesTab.hasEnabledRoles(['ROLE_COFFEE', 'ROLE_ADMIN'])
+        assert rolesTab.totalRoles() == 12
     }
 }
