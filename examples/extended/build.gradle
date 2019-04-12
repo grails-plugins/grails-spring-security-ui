@@ -67,6 +67,7 @@ dependencies {
     testCompile("io.github.bonigarcia:webdrivermanager:2.2.4") {
         exclude group: 'org.seleniumhq.selenium'
     }
+    testCompile "org.grails:grails-datastore-rest-client:6.1.10.RELEASE"
 
     compile 'dumbster:dumbster:1.6', { transitive = false }
     compile "org.grails.plugins:mail:$mailVesion"
