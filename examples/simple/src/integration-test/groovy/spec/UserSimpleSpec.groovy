@@ -4,6 +4,7 @@ import page.user.UserCreatePage
 import page.user.UserEditPage
 import page.user.UserSearchPage
 import spock.lang.IgnoreIf
+import spock.lang.IgnoreRest
 import spock.lang.Issue
 
 @IgnoreIf({
@@ -18,7 +19,7 @@ import spock.lang.Issue
     }
     false
 })
-class UserSpec extends AbstractSecuritySpec {
+class UserSimpleSpec extends AbstractSecuritySpec {
 
     void testFindAll() {
         when:
@@ -202,6 +203,63 @@ class UserSpec extends AbstractSecuritySpec {
         then: "12 roles are listed and 2 are enabled"
         assert rolesTab.totalEnabledRoles() == 2
         assert rolesTab.hasEnabledRoles(['ROLE_USER', 'ROLE_ADMIN'])
+        assert rolesTab.totalRoles() == 12
+    }
+
+    @Issue("https://github.com/grails-plugins/grails-spring-security-ui/issues/106")
+    void testUserRoleAssociationsAreRemoved() {
+        when: "edit user 2"
+        go 'user/edit/2'
+
+        then:
+        at UserEditPage
+
+        when: "select Roles tab"
+        rolesTab.select()
+
+        then: "12 roles are listed and 1 is enabled"
+        assert rolesTab.totalRoles() == 12
+        assert rolesTab.totalEnabledRoles() == 1
+        assert rolesTab.hasEnabledRole('ROLE_USER')
+
+        when: "ROLE_ADMIN is enabled and the changes are saved"
+        rolesTab.enableRole "ROLE_ADMIN"
+        submit()
+        rolesTab.select()
+
+        then: "12 roles are listed and 2 are enabled"
+        assert rolesTab.totalEnabledRoles() == 2
+        assert rolesTab.hasEnabledRoles(['ROLE_USER', 'ROLE_ADMIN'])
+        assert rolesTab.totalRoles() == 12
+
+        when: "edit user 2"
+        go 'user/edit/2'
+
+        then:
+        at UserEditPage
+
+        when: "select Roles tab"
+        rolesTab.select()
+
+        then: "12 roles are listed and 2 are enabled"
+        assert rolesTab.totalRoles() == 12
+        assert rolesTab.totalEnabledRoles() == 2
+        assert rolesTab.hasEnabledRole('ROLE_USER')
+
+        when: "ROLE_ADMIN is disabled and the changes are saved"
+        rolesTab.disableRole "ROLE_ADMIN"
+        submit()
+        go 'user/edit/2'
+
+        then:
+        at UserEditPage
+
+        when: "select Roles tab"
+        rolesTab.select()
+
+        then: "12 roles are listed and 1 is enabled"
+        assert rolesTab.totalEnabledRoles() == 1
+        assert rolesTab.hasEnabledRoles(['ROLE_USER'])
         assert rolesTab.totalRoles() == 12
     }
 }

@@ -440,8 +440,13 @@ class SpringSecurityUiService implements AclStrategy, ErrorsStrategy, Persistent
 
 	protected void removeUserRoles(user, Set rolesToRemove) {
 		rolesToRemove.each { role ->
-			removeUserRole(user, role)
+			removeUserRoleAndReturnBoolean(user, role)
 		}
+	}
+
+	@Transactional
+	boolean removeUserRoleAndReturnBoolean(def user, def role) {
+		UserRole.remove user, role
 	}
 
 	@Transactional

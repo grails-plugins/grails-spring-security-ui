@@ -12,3 +12,4 @@ classes
 cobertura.ser
 kindlegen
 /plugin/src/main/templates/views
+.java-version

@@ -33,6 +33,10 @@ class RolesTab extends Module {
         $("input", type: "checkbox", id: roleName).value(true)
     }
 
+    void disableRole(String roleName) {
+        $("input", type: "checkbox", id: roleName).value(false)
+    }
+
     boolean hasEnabledRole(String roleName) {
         return hasEnabledRoles([roleName])
     }
