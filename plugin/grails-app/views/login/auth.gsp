@@ -15,7 +15,7 @@
 				<table>
 					<tr>
 						<td><label for="username"><g:message code='spring.security.ui.login.username'/></label></td>
-						<td><input type="text" name="${securityConfig.apf.usernameParameter}" id="username" class='formLogin' size="20"/></td>
+						<td><input type="text" name="${securityConfig.apf.usernameParameter}" id="username" class='formLogin' size="20" autocapitalize="off" autofocus required/></td>
 					</tr>
 					<tr>
 						<td><label for="password"><g:message code='spring.security.ui.login.password'/></label></td>
