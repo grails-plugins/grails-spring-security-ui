@@ -1,8 +1,8 @@
 include 'plugin'
 include 'docs'
 
-include 'examples/simple'
-include 'examples/extended'
+include 'examples:simple'
+include 'examples:extended'
 
 rootProject.name = 'grails-spring-security-ui'
 

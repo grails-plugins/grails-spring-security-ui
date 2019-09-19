@@ -1,8 +1,8 @@
-dist: trusty
+dist: xenial
 addons:
   chrome: stable
 jdk:
-  - oraclejdk8
+  - openjdk8
 language: groovy
 sudo: required
 cache:
