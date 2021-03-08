@@ -408,13 +408,14 @@ class SpringSecurityUiService implements AclStrategy, ErrorsStrategy, Persistent
 		if (!user || !rolesToAdd) {
 			return
 		}
+
+        List<String> roleNames = []
+
 		rolesToAdd.each { role ->
-			def instance = UserRole.newInstance()
-			instance.user = user
-			instance.role = role
-			instance.save(insert: true)
-			instance
-		}
+            roleNames << role.authority
+        }
+
+        addRoles(user, roleNames)
 	}
 
 	protected void updateUserRoles(user, List<String> roleNames, TransactionStatus transactionStatus) {
@@ -436,8 +437,17 @@ class SpringSecurityUiService implements AclStrategy, ErrorsStrategy, Persistent
 	}
 
 	protected void removeUserRoles(user, Set rolesToRemove) {
-		rolesToRemove.each { role ->
-			removeUserRole(user, role)
+		if (!user || !rolesToRemove) {
+			return
+		}
+
+		try {
+			for (role in rolesToRemove) {
+				UserRole.remove user, role
+			}
+		}
+		catch (e) {
+			uiErrorsStrategy.handleException e, user, null, this, 'removeUserRoles', transactionStatus
 		}
 	}
 
